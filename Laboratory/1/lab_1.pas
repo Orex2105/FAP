@@ -1,6 +1,6 @@
 ﻿uses math;
 
-procedure task_two(start_: real; end_: integer; step: real; f: real -> real);
+procedure task_two(start_: real; end_: integer; step: real; func: real -> real);
 begin
   writeln('|   x   |   y   |');
   writeln('¦---------------¦');
@@ -8,7 +8,7 @@ begin
   var x := start_;
   while x <= end_ do
   begin
-    var y := f(x);
+    var y := func(x);
     writeln('¦', x:6:2, ' |', y:7:2, '¦');
     x += step;
   end;
@@ -20,30 +20,38 @@ end;
 function task_one(x: integer): real;
 begin
   var func: real -> real;
+  var doTaskTwo: string := 'n';
   
   if x < -9 then
   begin
-    func := x -> ln(x) / (x*x)
+    func := x -> ln(x) / (x*x);
+    writeln(func(x));
   end
   else if (x >= -9) and (x < -2) then
   begin
-    func := x -> power(x, 1/3) * x * (-1)
+    func := x -> power(x, 1/3) * x * (-1);
+    writeln(func(x));
   end
   else if (x >= -2) and (x < 4) then
   begin
-    func := x -> ln(x) + power(x, 0.1*x)
+    func := x -> ln(x) + power(x, 0.1*x);
+    writeln(func(x));
   end
   else if (4 <= x) then
   begin
-    func := x -> ln(x) / sqr(x)
+    func := x -> ln(x) / sqr(x);
+    writeln(func(x));
   end
   else
     func := x -> 0;
   
-  task_two(-11, 6, 0.2, func);
+  writeln('Выполнить второе задание? (y/n, default - n)');
+  readln(doTaskTwo);
+  if doTaskTwo = 'y' then
+    task_two(-11, 6, 0.2, func);
 end;
 
 
 begin
-  task_one(5);
+  writeln(task_one(5));
 end.
