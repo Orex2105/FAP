@@ -52,5 +52,7 @@ end;
 
 
 begin
+  one();
+  two();
   three();
 end.
