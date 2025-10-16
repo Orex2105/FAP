@@ -8,7 +8,11 @@ begin
   var x := start_;
   while x <= end_ do
   begin
-    var y := func(x);
+    var y: real;
+    if x > 0 then
+      y := func(x)
+    else
+      y := func(abs(x));
     writeln('¦', x:6:2, ' |', y:7:2, '¦');
     x += step;
   end;

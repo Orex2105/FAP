@@ -15,7 +15,7 @@ def two(start: float, end: float, step: float,
             y = f(x)
             print(f'| {x:6.2f} | {y:7.2f} |')
         except (ValueError, ZeroDivisionError):
-            print(f'| {x:6.2f} | {"None":>7} |')
+            print(f'| {x:6.2f} | {f(abs(x)):>7} |')
         x += step
     print("-" * 20)
 
