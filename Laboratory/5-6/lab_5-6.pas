@@ -1,10 +1,9 @@
 ﻿function removeat(var arr: array of integer; index: integer): array of integer;
 begin
   var n := arr.high();
-  
   for var i := index to n-1 do
     arr[i] := arr[i + 1];
-  
+  SetLength(arr, arr.High);
   result := arr;
 end;
 
@@ -40,13 +39,11 @@ begin
     begin
       index := i;
       arr := removeat(arr, index);
-      SetLength(arr, arr.High);
       break;
     end;
 end;
   println('Без последнего положительного элемента', arr);
   arr := removeat(arr, arr.IndexMax());
-  SetLength(arr, arr.High);
   print('Без наибольшего элемента', arr);
 end;
 
