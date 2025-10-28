@@ -1,9 +1,10 @@
-﻿function removeat(var arr: array of integer; index: integer): array of integer;
+﻿function RemoveAt(var arr: array of integer; index: integer): array of integer;
 begin
-  var n := arr.high();
-  for var i := index to n-1 do
+  var originalLength := arr.Length;
+  for var i := index to originalLength - 2 do
     arr[i] := arr[i + 1];
-  SetLength(arr, arr.High);
+  
+  SetLength(arr, originalLength - 1);
   result := arr;
 end;
 
@@ -19,8 +20,7 @@ end;
 
 procedure two();
 begin
-  writeln('Размер массива: ');
-  var n := readinteger();
+  var n := readinteger('Размер массива: ');
   writeln('Элементы массива: ');
   var arr := readarrinteger(n);
   println(arr.SequenceEqual(arr.sorted()));
