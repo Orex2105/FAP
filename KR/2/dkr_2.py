@@ -2,7 +2,6 @@ def is_monotone(lst: list[int]) -> bool:
     pairs = list((lst[i], lst[i+1]) for i in range(len(lst)-1))
     increasing = all(p[0] <= p[1] for p in pairs)
     decreasing = all(p[0] >= p[1] for p in pairs)
-    
     return decreasing or increasing
 
 

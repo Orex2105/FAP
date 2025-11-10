@@ -34,7 +34,7 @@ def task_one() -> None:
         DoubleElements(ArrOne)
     else:
         raise Exception('Индексы первых числел, кратных 5, совпали у обоих массивов')
-    
+     
     print(f'Массив A после изменений: {ArrOne}')
     print(f'Массив B после изменений: {ArrTwo}')
 
