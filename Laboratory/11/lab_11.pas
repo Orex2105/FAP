@@ -177,6 +177,7 @@ begin
 end;
 
 
+// Генератор окружностей
 function CircleGenerator(pattern: integer): sequence of TCircle;
 begin
   case pattern of
