@@ -30,7 +30,10 @@ type
       /// Рисует подписи разметке
       procedure RenderSegmentLabel();
       /// Рисует график функции на отрезке от a до b
-      procedure RenderFunction(f: real -> real; a, b: real; caption: string := '');
+      procedure RenderFunction(f: real -> real; a, b: real; caption: string := '';
+                                hatchFreq: integer := 40);
+      /// Делает штрих от точки до оси X
+      procedure Hatch(p: Point);
   end;
 
 
@@ -184,9 +187,11 @@ begin
 end;
 
 
-procedure CartesianSystem.RenderFunction(f: real -> real; a, b: real; caption: string);
+procedure CartesianSystem.RenderFunction(f: real -> real; a, b: real; caption: string;
+                                          hatchFreq: integer);
 begin
   var IsFirst := true;
+  var CatchCounter := 0;
   var x := a;
   
   while x <= b do
@@ -204,11 +209,14 @@ begin
       else
       begin
         LineTo(ScreenX, ScreenY);
+        if CatchCounter mod hatchFreq = 0 then
+          Hatch(new Point(ScreenX, ScreenY));
       end;
     except
       isFirst := true;
     end;
     x += 0.01;
+    Inc(CatchCounter);
   end;
   
   if caption <> '' then
@@ -219,6 +227,10 @@ begin
   Println($'S фигуры на отрезке ({a}; {b}) = {Area}');
 end;
 
+procedure CartesianSystem.Hatch(p: Point);
+begin
+  Line(p.x, p.Y, p.X, self.fCenter.Y);
+end;
 
 function Simpson(f: real -> real; a, b: real; n: integer): real;
 begin

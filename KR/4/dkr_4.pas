@@ -11,5 +11,5 @@ begin
   App.FontSize := 10;
   App.FontColor := RGBConvert(255, 0, 0);
   
-  Graph.RenderFunction(f, -1, 10, '2*x^3 - x^2 + x + 2');
+  Graph.RenderFunction(f, -10, 10, '2*x^3 - x^2 + x + 2');
 end.
