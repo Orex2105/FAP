@@ -34,6 +34,8 @@ App = class
                       center: boolean := true; smoothing: boolean := true);
     /// Применить настройки окна приложения
     procedure BuildApp();
+    /// Очищает экран
+    procedure Clear();
 end;
 
 /// Конвертация RGB в цвет
@@ -78,6 +80,11 @@ begin
     SetWindowCaption(self.fWindowCaption);
   
   if self.fCenterWindow = true then CenterWindow();
+end;
+
+procedure App.Clear();
+begin
+  Window.Clear();
 end;
 
 function RGBConvert(r: byte; g: byte; b: byte): Color;

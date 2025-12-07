@@ -30,15 +30,14 @@ type
       /// Рисует подписи разметке
       procedure RenderSegmentLabel();
       /// Рисует график функции на отрезке от a до b
-      procedure RenderFunction(f: real -> real; a, b: real; caption: string := '';
-                                hatchFreq: integer := 40);
+      procedure RenderFunction(f: real -> real; a, b: real; caption: string);
       /// Делает штрих от точки до оси X
       procedure Hatch(p: Point);
   end;
 
 
 function Simpson(f: real -> real; a, b: real; n: integer): real;
-function Area(a, b: real; n: integer): real;
+function Area(f: real -> real; a, b: real; n: integer): real;
 
 
 implementation
@@ -187,12 +186,32 @@ begin
 end;
 
 
-procedure CartesianSystem.RenderFunction(f: real -> real; a, b: real; caption: string;
-                                          hatchFreq: integer);
+procedure CartesianSystem.RenderFunction(f: real -> real; a, b: real; caption: string);
 begin
   var IsFirst := true;
-  var CatchCounter := 0;
+  var Step := self.fTickValue / self.fPixelUnit * 1.5;
+  var n := Round((b - a) * 10);
+  var HatchStep := (b - a) / self.fPixelUnit;
+  var NextHatch := a + HatchStep;
   var x := a;
+  
+  // СОХРАНЯЕМ НАСТРОЙКИ
+  var SavedColor := Pen.Color;
+  var SavedStyle := Pen.Style;
+  
+  SetPenColor(clGray);
+  SetPenStyle(DashStyle.Dash);
+  
+  // РИСУЕМ ПУНКТИР ПО a И b
+  var BoundAX := self.fCenter.X + Round(a * self.fPixelUnit / self.fTickValue);
+  var BoundBX := self.fCenter.X + Round(b * self.fPixelUnit / self.fTickValue);
+
+  Line(BoundAX, 0, BoundAX, Window.Height);
+  Line(BoundBX, 0, BoundBX, Window.Height);
+  
+  // ВОЗВРАЩАЕМ НАСТРОЙКИ НАЗАД
+  Pen.Color := SavedColor;
+  Pen.Style := SavedStyle;
   
   while x <= b do
   begin
@@ -209,21 +228,23 @@ begin
       else
       begin
         LineTo(ScreenX, ScreenY);
-        if CatchCounter mod hatchFreq = 0 then
+        
+        if (x >= NextHatch) then
+        begin
           Hatch(new Point(ScreenX, ScreenY));
+          NextHatch += HatchStep;
+        end;
       end;
     except
       isFirst := true;
     end;
-    x += 0.01;
-    Inc(CatchCounter);
+    x += Step;
   end;
   
   if caption <> '' then
     Println($'f(x) = {caption}');
   
-  var n := Round((b - a) * 10);
-  var Area := Round(Area(a, b, n), 3);
+  var Area := Round(Area(f, a, b, n), 3);
   Println($'S фигуры на отрезке ({a}; {b}) = {Area}');
 end;
 
@@ -258,10 +279,9 @@ begin
   Result := (h / 3) * total;
 end;
 
-function Area(a, b: real; n: integer): real;
+function Area(f: real -> real; a, b: real; n: integer): real;
 begin
-  var f: real -> real := x -> Max(2*Power(x, 3) - Sqr(x) + x + 2, 0);
-  Result := Simpson(f, a, b, n);
+  Result := Max(Simpson(f, a, b, n), 0);
 end;
 
 end.
