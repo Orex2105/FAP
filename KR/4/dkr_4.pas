@@ -12,11 +12,11 @@ begin
   App.Clear();
   App.BuildApp();
   
-  var Graph := new CartesianSystem(30, 1);
+  var Graph := new CartesianSystem(40, 1, 200 , 500);
   Graph.Render();
   
   App.FontSize := 10;
   App.FontColor := RGBConvert(255, 0, 0);
   
-  Graph.RenderFunction(f, a, b, '2*x^3 - x^2 + x + 2');
+  Graph.RenderFunctionSimpson(f, a, b, '2*x^3 - x^2 + x + 2');
 end.
